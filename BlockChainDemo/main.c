@@ -1,15 +1,42 @@
-//
-//  main.c
-//  BlockChainDemo
-//
-//  Created by YuliSun on 09/11/2016.
-//  Copyright © 2016 YuliSun. All rights reserved.
-//
+// Copyright (c) 2009-2010 Satoshi Nakamoto
+// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <stdio.h>
+#include "Block.h"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+Transaction trans[] = {
+    {'A','B',10},
+    {'B','A',5},
+    {'C','A',10},
+    {'B','A',6},
+    {'A','C',3},
+    {'B','C',1},
+    {'C','A',10},
+    {'B','A',2},
+    {'B','C',1},
+    {'A','C',8}
+    //{'A','A',8}
+};
+
+BlockChain Chain = {NULL, 0};
+
+int main(int argc, char* argv[]) {
+    
+    HashPrint("1234567");
+    HashPrint("salt1234567");
+    //return 0;
+    
+    int count = sizeof(trans)/sizeof(Transaction);
+    for (int i=0; i<count; i++) {
+        Mining(&Chain, &trans[i], 10000);
+    }
+    
+    LedgerPrint(Chain.tail);
+    BalancePrint(&Chain, 'A');
+    BalancePrint(&Chain, 'B');
+    BalancePrint(&Chain, 'C');
+    
     return 0;
 }
+
